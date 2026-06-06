@@ -2297,6 +2297,49 @@ bool explodeSurge(std::string surge, std::vector<Proxy> &nodes) {
                                 udp,
                                 tfo, scv);
                 break;
+            case "anytls"_hash:
+                server = trim(configs[1]);
+                port = trim(configs[2]);
+                if (port == "0")
+                    continue;
+
+                for (i = 3; i < configs.size(); i++) {
+                    vArray = split(configs[i], "=");
+                    if (vArray.size() != 2)
+                        continue;
+                    itemName = trim(vArray[0]);
+                    itemVal = trim(vArray[1]);
+                    switch (hash_(itemName)) {
+                        case "password"_hash:
+                            password = itemVal;
+                            break;
+                        case "sni"_hash:
+                            sni = itemVal;
+                            break;
+                        case "skip-cert-verify"_hash:
+                            scv = itemVal;
+                            break;
+                        case "server-cert-fingerprint-sha256"_hash:
+                        case "fingerprint"_hash:
+                            fp = itemVal;
+                            break;
+                        case "tls13"_hash:
+                            tls13 = itemVal;
+                            break;
+                        case "udp-relay"_hash:
+                            udp = itemVal;
+                            break;
+                        case "tfo"_hash:
+                            tfo = itemVal;
+                            break;
+                        default:
+                            continue;
+                    }
+                }
+
+                anyTlSConstruct(node, ANYTLS_DEFAULT_GROUP, remarks, port, password, server, std::vector<std::string>{},
+                                fp, sni, udp, tfo, scv, tls13);
+                break;
             case "snell"_hash:
                 server = trim(configs[1]);
                 port = trim(configs[2]);

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: subconverter-anytls-render
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 25500
